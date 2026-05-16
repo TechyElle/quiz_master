@@ -28,8 +28,3 @@ Built as a DOM manipulation project for Computer Engineering coursework at the P
 Open `index.html` in any modern browser.
 
 No install step is required.
-
-## About
-
-Elle - BS Computer Engineering, Year 1  
-Polytechnic University of the Philippines
