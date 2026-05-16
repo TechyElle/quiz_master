@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizCraft Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="topbar-left">
+                <div class="pup-badge-ring" aria-hidden="true">
+                    <img class="pup-logo" src="logo/pup_logo.png" alt="PUP logo">
+                </div>
+                <div class="topbar-title">
+                    <div class="topbar-title-kicker">QuizCraft</div>
+                    <div class="topbar-title-main">Exam Builder Studio</div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <span id="save-status" class="save-status" aria-live="polite">Saved</span>
+                <button id="add-question-btn" class="btn-add" type="button">
+                    <i class="fas fa-plus"></i> Add Question
+                </button>
+                <button id="save-exam-btn" class="btn-save" type="button">
+                    <i class="fas fa-file-export"></i> Export
+                </button>
+            </div>
+        </div>
+
+        <section class="studio-hero">
+            <div>
+                <div class="eyebrow">PUP Exam Paper Generator</div>
+                <h1>QuizCraft Studio</h1>
+                <p>Draft questions, balance topics, preview the student paper, and prepare a cleaner exam export.</p>
+            </div>
+            <div class="hero-metrics" aria-label="Exam readiness">
+                <div class="readiness-ring">
+                    <span id="readiness-score">0%</span>
+                </div>
+                <div>
+                    <div class="hero-metric-label">Exam Readiness</div>
+                    <div id="readiness-note" class="hero-metric-note">Add questions to begin.</div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="studio-tabs" aria-label="Studio views">
+            <button class="studio-tab is-active" type="button" data-view="build">
+                <i class="fas fa-pen-ruler"></i> Build
+            </button>
+            <button class="studio-tab" type="button" data-view="preview">
+                <i class="fas fa-file-lines"></i> Preview
+            </button>
+            <button class="studio-tab" type="button" data-view="export">
+                <i class="fas fa-box-archive"></i> Export
+            </button>
+        </nav>
+
+        <div class="main-grid">
+            <aside class="left-panel">
+                <div class="institution-panel">
+                    <div class="institution-logo-wrap">
+                        <div class="pup-badge-ring pup-badge-ring--small" aria-hidden="true">
+                            <img class="pup-logo" src="logo/pup_logo.png" alt="PUP logo">
+                        </div>
+                    </div>
+
+                    <div class="institution-info">
+                        <div class="institution-name">Polytechnic University of the Philippines</div>
+                        <div class="institution-accent">Institute of Computing Sciences</div>
+                        <div class="institution-meta">Exam Studio Workspace</div>
+                    </div>
+                </div>
+
+                <div class="stats-panel">
+                    <div class="stat">
+                        <div class="stat-label">Questions</div>
+                        <div id="stat-question-count" class="stat-value">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Total Points</div>
+                        <div id="stat-total-points" class="stat-value">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Duration</div>
+                        <div id="stat-duration" class="stat-value">0m</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Topics</div>
+                        <div id="stat-topic-count" class="stat-value">0</div>
+                    </div>
+                </div>
+
+                <div class="readiness-panel">
+                    <div class="panel-title">Exam Readiness</div>
+                    <div class="readiness-bar" aria-hidden="true">
+                        <div id="readiness-fill" class="readiness-fill"></div>
+                    </div>
+                    <div id="readiness-checklist" class="readiness-checklist">
+                        <!-- Checklist injected by JS -->
+                    </div>
+                </div>
+
+                <div class="templates-panel">
+                    <div class="panel-title">Starter Templates</div>
+                    <button class="template-btn" type="button" data-template="midterm">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Midterm Mix</span>
+                    </button>
+                    <button class="template-btn" type="button" data-template="programming">
+                        <i class="fas fa-code"></i>
+                        <span>Programming Drill</span>
+                    </button>
+                    <button class="template-btn" type="button" data-template="problem">
+                        <i class="fas fa-square-root-variable"></i>
+                        <span>Problem Set</span>
+                    </button>
+                </div>
+
+                <div class="filter-panel">
+                    <div class="panel-title">Topic Filter</div>
+                    <div id="topic-filter" class="topic-filter" role="list" aria-label="Topic filter">
+                        <!-- Buttons injected by JS -->
+                    </div>
+                </div>
+            </aside>
+
+            <main class="right-panel">
+                <section id="build-view" class="studio-view is-active" aria-label="Question builder">
+                    <div id="empty-state" class="empty-state">
+                        <div>
+                            <div class="empty-kicker">No questions yet</div>
+                            <h2>Start building your exam paper.</h2>
+                            <p>Add a blank question or use a starter template from the studio panel.</p>
+                        </div>
+                        <button id="empty-add-question-btn" class="btn-save" type="button">
+                            <i class="fas fa-plus"></i> Add First Question
+                        </button>
+                    </div>
+                    <div id="questions-container" class="questions-list" aria-label="Questions">
+                        <!-- Dynamic questions will be added here -->
+                    </div>
+                </section>
+
+                <section id="preview-view" class="studio-view" aria-label="Exam paper preview">
+                    <div id="exam-preview" class="exam-preview">
+                        <!-- Preview injected by JS -->
+                    </div>
+                </section>
+
+                <section id="export-view" class="studio-view" aria-label="Export summary">
+                    <div class="export-panel">
+                        <div>
+                            <div class="eyebrow">Final Check</div>
+                            <h2>Ready for export</h2>
+                            <p>Review the structure, copy the JSON package, or use the preview as your printable guide.</p>
+                        </div>
+                        <div id="export-summary" class="export-summary">
+                            <!-- Export summary injected by JS -->
+                        </div>
+                        <div class="export-actions">
+                            <button id="export-copy-json-btn" class="btn-save" type="button">
+                                <i class="fas fa-copy"></i> Copy JSON
+                            </button>
+                            <button id="export-open-modal-btn" class="btn-add" type="button">
+                                <i class="fas fa-table"></i> Review Table
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div id="save-modal" class="modal" aria-hidden="true">
+        <div class="modal-overlay" data-close-modal="true"></div>
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="save-modal-title">
+            <div class="modal-header">
+                <div>
+                    <div id="save-modal-title" class="modal-title">Export Exam</div>
+                    <div class="modal-subtitle">Review question topic, type, and points</div>
+                </div>
+                <button class="modal-close" type="button" data-close-modal="true" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="save-summary">
+                    <div class="save-summary-item">
+                        <div class="save-summary-label">Total Questions</div>
+                        <div id="modal-question-count" class="save-summary-value">0</div>
+                    </div>
+                    <div class="save-summary-item">
+                        <div class="save-summary-label">Total Points</div>
+                        <div id="modal-total-points" class="save-summary-value">0</div>
+                    </div>
+                </div>
+
+                <div class="modal-table-wrap">
+                    <table class="modal-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Topic</th>
+                                <th>Type</th>
+                                <th>Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modal-question-rows">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="modal-actions">
+                    <button id="modal-copy-json-btn" class="btn-save" type="button">
+                        <i class="fas fa-copy"></i> Copy JSON
+                    </button>
+                    <button id="modal-done-btn" class="btn-add" type="button" data-close-modal="true">
+                        <i class="fas fa-check"></i> Done
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
