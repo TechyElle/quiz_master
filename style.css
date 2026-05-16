@@ -1,3 +1,10 @@
+/*
+    FILE: style.css
+    PROJECT: QuizCraft Studio - PUP Exam Paper Generator
+    AUTHOR: Hand-coded and designed by Cielle Mae Peñamora
+    DATE: 2026
+*/
+
 :root {
     --primary-color: #4a0712;
     --accent-color: #8d1026;
@@ -20,12 +27,24 @@
     --topic-default: #83777f;
 }
 
+/*
+   Reset / box model
+   -----------------
+   Removes default margins/paddings and makes width/height
+   calculations predictable by using border-box sizing.
+*/
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/*
+   Page background + typography base
+   ---------------------------------
+   Sets global text color and applies the patterned gradient background.
+   Also establishes the base font family and line height.
+*/
 body {
     min-height: 100vh;
     color: var(--text-color);
@@ -42,10 +61,18 @@ button,
 input,
 select,
 textarea {
+    /*
+      Inherit font settings from body so controls match typography.
+      This helps keep consistent sizing across inputs/selects.
+    */
     font: inherit;
 }
 
 button {
+    /*
+      Primary button baseline: border, color, background, and transitions.
+      Hover/active states are defined in separate rules below.
+    */
     border: 1px solid var(--border-color);
     border-radius: 10px;
     cursor: pointer;
@@ -55,7 +82,12 @@ button {
 }
 
 button:hover {
+    /*
+      Subtle elevation on hover.
+      Keeps interaction feedback consistent across the app.
+    */
     transform: translateY(-1px);
+
     border-color: rgba(141, 16, 38, 0.32);
     box-shadow: 0 10px 24px rgba(43, 22, 25, 0.08);
 }
@@ -72,11 +104,21 @@ textarea:focus-visible {
     outline-offset: 2px;
 }
 
+/*
+   Container / page layout helpers
+   --------------------------------
+   - .container centers the app and provides consistent horizontal padding.
+*/
 .container {
     width: min(1180px, calc(100% - 32px));
     margin: 24px auto 40px;
 }
 
+/*
+   Top navigation bar
+   -------------------
+   Holds autosave status + global actions (Add Question, Export).
+*/
 .topbar {
     display: flex;
     justify-content: space-between;

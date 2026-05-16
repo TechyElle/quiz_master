@@ -1,4 +1,20 @@
+<!--
+    FILE: index.html
+    PROJECT: QuizCraft Studio - PUP Exam Paper Generator
+    AUTHOR: Hand-coded and designed by Cielle Mae Peñamora
+    DATE: 2026
+-->
 <!DOCTYPE html>
+<!--
+    Markup map (static):
+    - Topbar: global actions (add/export) + autosave status
+    - Hero: project title + readiness meter (filled by script.js)
+    - Tabs: Build | Preview | Export (toggled by script.js)
+    - Main grid:
+      * Left panel: stats + readiness checklist + templates + topic filter
+      * Right panel: view containers populated/rendered by script.js
+    - Save modal: export review table + copy JSON
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +24,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
+        <!-- Main Page Wrapper (overall app layout) -->
+        <div class="container">
         <div class="topbar">
             <div class="topbar-left">
                 <div class="pup-badge-ring" aria-hidden="true">
@@ -31,6 +48,7 @@
             </div>
         </div>
 
+        <!-- Hero / Header section (project title + readiness meter) -->
         <section class="studio-hero">
             <div>
                 <div class="eyebrow">PUP Exam Paper Generator</div>
@@ -48,6 +66,7 @@
             </div>
         </section>
 
+        <!-- Studio Tabs (Build / Preview / Export) -->
         <nav class="studio-tabs" aria-label="Studio views">
             <button class="studio-tab is-active" type="button" data-view="build">
                 <i class="fas fa-pen-ruler"></i> Build
@@ -60,7 +79,9 @@
             </button>
         </nav>
 
+        <!-- Two-Column Main Layout (Left Stats/Filters + Right Views) -->
         <div class="main-grid">
+            <!-- Left Panel (stats, readiness, templates, topic filter) -->
             <aside class="left-panel">
                 <div class="institution-panel">
                     <div class="institution-logo-wrap">
@@ -129,7 +150,9 @@
                 </div>
             </aside>
 
+            <!-- Right Panel (active view container: build/preview/export) -->
             <main class="right-panel">
+                <!-- Build view: question editor (cards are injected by script.js) -->
                 <section id="build-view" class="studio-view is-active" aria-label="Question builder">
                     <div id="empty-state" class="empty-state">
                         <div>
@@ -146,12 +169,14 @@
                     </div>
                 </section>
 
+                <!-- Preview view: student-facing exam paper (HTML injected by script.js) -->
                 <section id="preview-view" class="studio-view" aria-label="Exam paper preview">
                     <div id="exam-preview" class="exam-preview">
                         <!-- Preview injected by JS -->
                     </div>
                 </section>
 
+                <!-- Export view: readiness summary + export actions -->
                 <section id="export-view" class="studio-view" aria-label="Export summary">
                     <div class="export-panel">
                         <div>
@@ -176,6 +201,7 @@
         </div>
     </div>
 
+    <!-- Export modal: populated (table rows + totals) by script.js -->
     <div id="save-modal" class="modal" aria-hidden="true">
         <div class="modal-overlay" data-close-modal="true"></div>
         <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="save-modal-title">

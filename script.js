@@ -1,4 +1,14 @@
+// ------------------------------------------------------------
+// QuizCraft Studio (vanilla JS)
+// Main SPA controller for:
+//  - building/updating question cards
+//  - computing readiness + stats
+//  - rendering student preview
+//  - exporting/copying JSON via modal
+// ------------------------------------------------------------
+
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Core DOM anchors (existing markup in index.html) ---
     const questionsContainer = document.getElementById('questions-container');
     const addQuestionBtn = document.getElementById('add-question-btn');
     const emptyAddQuestionBtn = document.getElementById('empty-add-question-btn');
@@ -27,9 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportCopyJsonBtn = document.getElementById('export-copy-json-btn');
     const exportOpenModalBtn = document.getElementById('export-open-modal-btn');
 
+    // -------------------------
+    // Configuration / constants
+    // -------------------------
+
+    // Key used for browser-local autosave of the exam draft.
     const STORAGE_KEY = 'quizcraft_studio_exam_v1';
 
+    // Topic list used both for UI badges and the topic filter buttons.
     const TOPIC_OPTIONS = [
+
         { key: 'Programming', dotVar: '--topic-prog' },
         { key: 'Networking', dotVar: '--topic-net' },
         { key: 'Logic Design', dotVar: '--topic-logic' },
@@ -60,24 +77,36 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
     };
 
-    let autosaveTimer = null;
-    let activeTopic = 'All';
-    let activeView = 'build';
-    let questions = [];
+    // -------------------------
+    // Application state
+    // -------------------------
 
+    let autosaveTimer = null; // handle for debounced autosave
+    let activeTopic = 'All'; // current topic filter in Build view
+    let activeView = 'build'; // current tab: build | preview | export
+    let questions = []; // the full in-memory exam model
+
+
+    // Generate a unique ID for questions.
+    // Uses crypto.randomUUID when available, falls back to time+random.
     function newId() {
         return crypto && crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
     }
 
+
+    // Helper for template seeds: provides a normalized question object.
     function createQuestionSeed(text, topic, type, points, difficulty, bloom, options = ['', '', '', ''], answer = '') {
         return { text, topic, type, points, difficulty, bloom, options, answer, note: '' };
     }
 
+
+    // Ensure points are safe numeric integers >= 0.
     function normalizePoints(v) {
         const n = Number(v);
         if (Number.isNaN(n)) return 0;
         return Math.max(0, Math.floor(n));
     }
+
 
     function setSaveState(state, message) {
         if (!saveStatus) return;
@@ -134,8 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return field;
     }
 
+    // Builds a single editable question “card” (textarea/selects/etc) for Build mode.
+    // Each UI control mutates the corresponding entry inside the `questions` array.
     function createQuestionCardEl(q, index1Based) {
         const questionItem = document.createElement('div');
+
         questionItem.className = 'question-item';
         questionItem.dataset.id = q.id;
 
@@ -292,8 +324,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return questionItem;
     }
 
+    // -------------------------
+    // Persistence (localStorage)
+    // -------------------------
+
     function saveToLocalStorage() {
         const payload = { questions, updatedAt: Date.now() };
+
         try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
             return true;
@@ -303,9 +340,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Loads the last saved draft from localStorage.
+    // Includes a legacy key fallback for older drafts.
     function loadFromLocalStorage() {
         try {
             const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('quiz_master_exam_v2');
+
             if (!raw) return null;
             const parsed = JSON.parse(raw);
             if (!parsed || !Array.isArray(parsed.questions)) return null;
@@ -316,9 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Debounced autosave: avoids writing to localStorage on every keystroke.
     function triggerAutosave() {
         setSaveState('saving', 'Saving...');
         if (autosaveTimer) clearTimeout(autosaveTimer);
+
         autosaveTimer = setTimeout(() => {
             const ok = saveToLocalStorage();
             if (ok) setSaveState('saved', 'Saved');
@@ -326,8 +368,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 250);
     }
 
+    // -------------------------
+    // Stats + Readiness logic
+    // -------------------------
+
     function computeStats() {
         const totalPoints = questions.reduce((sum, q) => sum + normalizePoints(q.points), 0);
+
         const topicCount = new Set(questions.map(q => q.topic).filter(Boolean)).size;
         const hasQuestionText = questions.filter(q => (q.text || '').trim()).length;
         const hasPoints = questions.filter(q => normalizePoints(q.points) > 0).length;
@@ -410,8 +457,13 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
+    // -------------------------
+    // Student-facing Preview rendering
+    // -------------------------
+
     function renderPreview() {
         if (!examPreview) return;
+
         if (!questions.length) {
             examPreview.innerHTML = `
                 <div class="preview-empty">

@@ -28,3 +28,11 @@ Built as a DOM manipulation project for Computer Engineering coursework at the P
 Open `index.html` in any modern browser.
 
 No install step is required.
+
+## Author
+
+Designed and hand-coded by Cielle Mae Penamora.
+
+## License
+
+This project is for educational and portfolio use. Add a license file if you plan to publish or distribute it publicly.
